@@ -47,16 +47,29 @@ class MyHomepage extends StatefulWidget {
   State<MyHomepage> createState() => _MyHomepageState();
 }
 
-class _MyHomepageState extends State<MyHomepage> {
+class _MyHomepageState extends State<MyHomepage> with WidgetsBindingObserver {
   final List<Transaction> _userTransactions = [
     Transaction(id: "t1", title: "Item 1", amount: 69.99, date: DateTime.now()),
     Transaction(id: "t2", title: "Item 2", amount: 99.99, date: DateTime.now()),
-    Transaction(id: "t2", title: "Item 2", amount: 99.99, date: DateTime.now()),
-    Transaction(id: "t2", title: "Item 2", amount: 99.99, date: DateTime.now()),
-    Transaction(id: "t2", title: "Item 2", amount: 99.99, date: DateTime.now()),
-    Transaction(id: "t2", title: "Item 2", amount: 99.99, date: DateTime.now()),
-    Transaction(id: "t2", title: "Item 2", amount: 99.99, date: DateTime.now()),
+    Transaction(id: "t3", title: "Item 3", amount: 99.99, date: DateTime.now()),
   ];
+
+  @override
+  void initState() {
+    WidgetsBinding.instance!.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print(state);
+  }
+
+  @override
+  dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
+    super.dispose();
+  }
 
   List<Transaction> get _recentTransactions {
     return _userTransactions.where((tx) {
